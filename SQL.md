@@ -5,14 +5,16 @@ A quick reminder of all relevant SQL queries and examples on how to use them.
 For proper SQL style and formating, follow www.sqlstyle.guide
 
 # Table of Contents 
-1. [ Finding Data Queries. ](#find)
-2. [ Data Modification Queries. ](#modify)
-3. [ Aggregation Functions. ](#aggregation)
-4. [ Join Queries. ](#joins)
-5. [ View Queries. ](#view)
-6. [ Altering Table Queries.](#alter)
-7. [ Creating Table Query.](#create)
-8. [ Common Table Expressions.](#CTE)
+1.  [ Finding Data Queries. ](#find)
+2.  [ Data Modification Queries. ](#modify)
+3.  [ Aggregation Functions. ](#aggregation)
+4.  [ Join Queries. ](#joins)
+5.  [ View Queries. ](#view)
+6.  [ Altering Table Queries.](#alter)
+7.  [ Creating Table Query.](#create)
+8.  [ Common Table Expressions.](#cte)
+9.  [ Windows Functions ](#windows)
+10. [ Cleaning Functions ](#cleaning)
 
 <a name="find"></a>
 # 1. Finding Data Queries
@@ -248,7 +250,7 @@ CREATE TABLE table_name(
              )
 ```
    
-<a name="CTE"></a>
+<a name="cte"></a>
 # 8. Common Table Expressions or CTE's
 ``` sql
 WITH cte_name AS (
@@ -261,7 +263,7 @@ WITH cte_name AS (
 SELECT columns FROM cte_name, cte_name_2 WHERE condition
 ```
    
-<a name="Windows"></a>
+<a name="windows"></a>
 # 9. Windows Functions
 
 ### **OVER**: General Window Function
@@ -311,7 +313,7 @@ SELECT column_name,
  WHERE condition
 ``` 
 
-<a name="Cleaning"></a>
+<a name="cleaning"></a>
 # 10. Cleaning
 
 ### **CAST**: cast diferent data types
