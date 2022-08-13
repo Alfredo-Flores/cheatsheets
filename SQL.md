@@ -15,6 +15,7 @@ For proper SQL style and formating, follow www.sqlstyle.guide
 8.  [ Common Table Expressions.](#cte)
 9.  [ Windows Functions ](#windows)
 10. [ Cleaning Functions ](#cleaning)
+11. [ Stored Procedures ](#procedures)
 
 <a name="find"></a>
 # 1. Finding Data Queries
@@ -325,4 +326,55 @@ SELECT TRIM(column_name) FROM table_name WHERE condition
 ### **COALESCE**: replace null values for certain string or integer
 ``` sql
 SELECT COALESCE(column_name, "string_or_integer") FROM table_name WHERE condition
+```
+
+<a name="procedures"></a>
+# 11. Stored Procedures
+
+### **PROCEDURE**: like functions, with parameters and please use transactions
+``` sql
+-- =============================================
+-- Author:
+-- Create date:
+-- Description:
+-- =============================================
+
+CREATE PROCEDURE [dbo].[verb] @CRUD VARCHAR(8),
+                              @variable_name INT = NULL,
+                              @variable_name INT
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRANSACTION
+            IF @CRUD = 'select'
+                BEGIN
+
+                END
+            ELSE
+                IF @CRUD = 'insert'
+                    BEGIN
+
+                    END
+                ELSE
+                    IF @CRUD = 'update'
+                        BEGIN
+
+                        END
+                    ELSE
+                        IF @CRUD = 'delete'
+                            BEGIN
+
+                            END
+        COMMIT
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION
+        DECLARE @ErrorMessage VARCHAR(MAX) = ERROR_MESSAGE();
+        DECLARE @ErrorSeverity VARCHAR(MAX) = ERROR_SEVERITY();
+        DECLARE @ErrorState VARCHAR(MAX) = ERROR_STATE();
+
+        RAISERROR (@ErrorMessage,@ErrorSeverity,@ErrorState)
+    END CATCH
+END
+GO
 ```
