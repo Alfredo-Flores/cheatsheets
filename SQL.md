@@ -254,7 +254,23 @@ WITH cte_name AS (
    
 SELECT columns FROM cte_name, cte_name_2 WHERE condition
 ```
-   
+
+### **Get Mode**: 
+``` sql
+WITH Mode (partition_column, alias)
+as
+(
+	SELECT partition_column, 
+	ROW_NUMBER() OVER(PARTITION BY partition_column ORDER BY other_column) AS alias
+	FROM table_name 
+)
+
+SELECT partition_column
+FROM Mode
+WHERE alias IN (SELECT MAX(alias) FROM Mode)
+```
+
+
 <a name="windows"></a>
 # 9. Windows Functions
 
@@ -378,3 +394,121 @@ BEGIN
 END
 GO
 ```
+
+<a name="sqlserver"></a>
+# 12. SQL Server things
+
+### **TOP**: LIMIT equivalent
+``` sql
+SELECT TOP(1) PERCENT column_name FROM table_name WHERE condition
+``` 
+
+### **LEN**: 
+``` sql
+SELECT LEN(column_name) as alias_name FROM table_name WHERE condition
+``` 
+
+### **CHARINDEX**: 
+``` sql
+SELECT CHARINDEX('string', column_name) FROM table_name WHERE condition
+```
+
+### **SUBSTRING**: 
+``` sql
+SELECT SUBSTRING(column_name, from, lenght) FROM table_name WHERE condition
+``` 
+
+### **DECLARE**: 
+``` sql
+DECLARE @variable INT = 0
+
+SET @variable = 1
+``` 
+
+### **ISNULL**: COALESCE equivalent, but just 1 column
+``` sql
+SELECT ISNULL(column_name, '') FROM table_name WHERE condition
+``` 
+
+### **COALESCE**: COALESCE equivalent, multiple columns
+``` sql
+SELECT COALESCE(column_name, column_name, column_name, '') FROM table_name WHERE condition
+``` 
+
+### **Temporal Tables**: 
+``` sql
+SELECT  column_name
+INTO #temporal_table
+FROM table_name
+
+SELECT column_name
+FROM #temporal_table
+``` 
+
+### **DATEADD**: To add or subtract a value to get a new date
+``` sql
+SELECT DATEADD(DATEPART, number, 'dd-mm-yyyy') FROM table_name WHERE condition
+```
+
+### **DATEDIFF**: Get difference
+``` sql
+SELECT DATEADD(DATEPART, 'dd-mm-yyyy', 'dd-mm-yyyy') FROM table_name WHERE condition
+```
+
+### **ROUND**: Get difference
+``` sql
+SELECT ROUND(number, lenght, lenght_truncate) FROM table_name WHERE condition
+```
+
+### **ABS**: absolute
+``` sql
+SELECT ABS(column_name) FROM table_name WHERE condition
+```
+
+### **SQRT**: 
+``` sql
+SELECT SQRT(column_name) FROM table_name WHERE condition
+```
+
+### **SQUARE**: 
+``` sql
+SELECT SQUARE(column_name) FROM table_name WHERE condition
+```
+
+### **LOG**
+``` sql
+SELECT LOG(column_name) FROM table_name WHERE condition
+```
+
+### **stdev**
+``` sql
+SELECT stdev(column_name) OVER(ORDER BY column_name) FROM table_name WHERE condition
+```
+
+### **CTE** 
+``` sql
+WITH cte_name (new_column) 
+  AS (SELECT column as new_column FROM table_name WHERE condition)
+   
+SELECT new_column FROM cte_name WHERE condition
+```
+
+### **DATES** 
+``` sql
+SELECT
+	DATEPART(YEAR, @date) AS TheYear,
+	DATEPART(MONTH, @date) AS TheMonth,
+	DATEPART(DAY, @date) AS TheDay,
+	DATEPART(DAYOFYEAR, @date) AS TheDayOfYear,
+	DATEPART(WEEKDAY, @date) AS TheDayOfWeek,
+	DATEPART(WEEK, @date) AS TheWeek,
+	DATEPART(SECOND, @date) AS TheSecond,
+	DATEPART(NANOSECOND, @date) AS TheNanosecond;
+```
+
+### **CALENDAR TABLE** 
+
+### **APPLY** 
+
+<a name="optimization"></a>
+# 12. Optimization
