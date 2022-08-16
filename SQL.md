@@ -580,5 +580,45 @@ SELECT
 
 ### **APPLY** 
 
-<a name="optimization"></a>
-# 12. Optimization
+
+### **UDF**: User Defined Functions
+``` sql
+CREATE FUNCTION GetYesterday()
+RETURNS DATE
+AS
+BEGIN
+
+RETURN(SELECT DATEADD(day, -1, GETDATE()))
+END 
+```
+
+
+### **ITVF**: Inline statement table value function, best performance
+``` sql
+CREATE FUNCTION SumStationStats(@StartDate AS datetime)
+RETURNS TABLE
+AS
+RETURN
+SELECT column_name
+	FROM table_name
+	WHERE condition
+
+```
+### **MTVF**: Multi statement table value function
+``` sql
+CREATE FUNCTION CountTripAvgDuration (@Month CHAR(2), @Year CHAR(4))
+RETURNS @DailyTripStats TABLE(
+	TripDate	date,
+	TripCount	int,
+	AvgDuration	numeric)
+AS
+BEGIN
+
+	INSERT INTO @DailyTripStats
+	SELECT column_name
+	FROM table_name
+	WHERE condition
+
+RETURN 
+END
+```
