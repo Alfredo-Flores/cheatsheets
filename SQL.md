@@ -148,6 +148,9 @@ GROUP BY column_name;
 ### **COUNT**: returns the # of occurrences
 * `SELECT COUNT (DISTINCT` column_name`)`;
 
+### **COUNT_BIG**: returns the # of occurrences
+* `SELECT COUNT_BIG(DISTINCT` column_name`)`;
+
 ### **MIN() and MAX()**: returns the smallest/largest value of the selected column
 * `SELECT MIN (`column_names`) FROM` table_name `WHERE` condition;
 * `SELECT MAX (`column_names`) FROM` table_name `WHERE` condition;
@@ -344,6 +347,30 @@ SELECT TRIM(column_name) FROM table_name WHERE condition
 SELECT COALESCE(column_name, "string_or_integer") FROM table_name WHERE condition
 ```
 
+### **Cleaning Strings**: 
+``` sql
+SELECT 
+    LEFT(REPLACE(UPPER(TRIM(c.column_name)), '.', ''), 3) AS alias,
+FROM table_name
+```
+
+### **Safe functions**:
+
+* CAST()	* TRY_CAST()	-- General SQL
+* CONVERT()	* TRY_CONVERT()	-- SQL Server Exclusive, best performance
+* PARSE()	* TRY_PARSE()	-- SQL Server Exclusive, worst alternative, don't
+
+* ISDATE()
+* CHARINDEX()
+* PATINDEX()
+* CONCAT()
+* CONCAT_WS()
+* STRING_AGG()
+* STRING_SPLIT() -- on FROM clause
+* CEILING()
+* FLOOR()
+* POWER()
+
 <a name="procedures"></a>
 # 11. Stored Procedures
 
@@ -450,6 +477,11 @@ FROM #temporal_table
 SELECT DATEADD(DATEPART, number, 'dd-mm-yyyy') FROM table_name WHERE condition
 ```
 
+### **dbo.Calendar**: Calendar table
+``` sql
+
+```
+
 ### **DATEDIFF**: Get difference
 ``` sql
 SELECT DATEADD(DATEPART, 'dd-mm-yyyy', 'dd-mm-yyyy') FROM table_name WHERE condition
@@ -493,20 +525,58 @@ WITH cte_name (new_column)
 SELECT new_column FROM cte_name WHERE condition
 ```
 
-### **DATES** 
+## Grouping
+
+### **ROLLUP or CUBE**:
 ``` sql
-SELECT
-	DATEPART(YEAR, @date) AS TheYear,
-	DATEPART(MONTH, @date) AS TheMonth,
-	DATEPART(DAY, @date) AS TheDay,
-	DATEPART(DAYOFYEAR, @date) AS TheDayOfYear,
-	DATEPART(WEEKDAY, @date) AS TheDayOfWeek,
-	DATEPART(WEEK, @date) AS TheWeek,
-	DATEPART(SECOND, @date) AS TheSecond,
-	DATEPART(NANOSECOND, @date) AS TheNanosecond;
+  SELECT column_name,
+         column_name_2,
+         SUM(column_name_sum)
+    FROM table_name
+GROUP BY
+	 column_name,
+	 column_name_2
+WITH ROLLUP
+WHERE condition;
 ```
 
-### **CALENDAR TABLE** 
+### **GROUPING SETS**:
+``` sql
+  SELECT column_name,
+         column_name_2,
+         SUM(column_name_sum)
+    FROM table_name
+GROUP BY GROUPING SETS
+(
+  	-- Group in hierarchical order
+	(column_name, column_name_2),
+  	-- Group by 
+	(column_name),
+	-- Is weekend or not
+	(c.IsWeekend),
+        -- This remains blank; it gives us the grand total
+	()
+)
+WHERE condition;
+```
+
+### **High and Low precision dates**: 
+``` sql
+SELECT
+	-- High Precision
+	CONVERT(date, SYSDATETIME()) AS [SYSDATETIME],
+	CONVERT(date, SYSDATETIMEOFFSET()) AS [SYSDATETIMEOFFSET],
+	CONVERT(date, SYSUTCDATETIME()) AS [SYSUTCDATETIME],
+	-- Low Precision
+	CONVERT(date, CURRENT_TIMESTAMP) AS [CURRENT_TIMESTAMP],
+	CONVERT(date, GETDATE()) AS [GETDATE],
+	CONVERT(date, GETUTCDATE()) AS [GETUTCDATE];
+```
+
+
+### **Other functions**:
+* NULLIF(column_name, string)
+* PERCENTILE_COUNT(0.5)	WITHIN GROUP (ORDER BY someval) OVER()	--median, not performance friendly
 
 ### **APPLY** 
 
