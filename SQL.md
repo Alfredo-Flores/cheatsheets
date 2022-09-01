@@ -422,6 +422,34 @@ END
 GO
 ```
 
+``` sql
+-- =============================================
+-- Author:
+-- Create date:
+-- Description:
+-- =============================================
+
+CREATE OR ALTER PROCEDURE dbo.cuspRideSummaryDelete
+	@DateParm date,
+	@Error nvarchar(max) = NULL OUTPUT
+AS
+SET NOCOUNT ON
+BEGIN
+  BEGIN TRY
+      DELETE FROM RideSummary
+      WHERE Date = @DateParm
+  END TRY
+  BEGIN CATCH
+		SET @Error = 
+		'Error_Number: '+ CAST(ERROR_NUMBER() AS VARCHAR) +
+		'Error_Severity: '+ CAST(ERROR_SEVERITY() AS VARCHAR) +
+		'Error_State: ' + CAST(ERROR_STATE() AS VARCHAR) + 
+		'Error_Message: ' + ERROR_MESSAGE() + 
+		'Error_Line: ' + CAST(ERROR_LINE() AS VARCHAR)
+  END CATCH
+END;
+```
+
 <a name="sqlserver"></a>
 # 12. SQL Server things
 
