@@ -20,30 +20,35 @@ For proper SQL style and formating, follow www.sqlstyle.guide
 <a name="find"></a>
 # 1. Finding Data Queries
 
-### **SELECT**: used to select data from a database
-* `SELECT` * `FROM` table_name;
-
 ### **DISTINCT**: filters away duplicate values and returns rows of specified column
 * `SELECT DISTINCT` column_name;
 
 ### **WHERE**: used to filter records/rows
-* `SELECT` column1, column2 `FROM` table_name `WHERE` condition;
-* `SELECT` * `FROM` table_name `WHERE` condition1 `AND` condition2;
-* `SELECT` * `FROM` table_name `WHERE` condition1 `OR` condition2;
-* `SELECT` * `FROM` table_name `WHERE NOT` condition;
-* `SELECT` * `FROM` table_name `WHERE` condition1 `AND` (condition2 `OR` condition3);
-* `SELECT` * `FROM` table_name `WHERE EXISTS` (`SELECT` column_name `FROM` table_name `WHERE` condition);
+``` sql
+SELECT column1, column2 FROM table_name WHERE condition;
+SELECT * FROM table_name WHERE condition1 AND condition2;
+SELECT * FROM table_name WHERE condition1 OR condition2;
+SELECT * FROM table_name WHERE NOT condition;
+SELECT * FROM table_name WHERE condition1 AND (condition2 OR condition3);
+SELECT * FROM table_name WHERE EXISTS` (SELECT column_name FROM table_name WHERE condition);
+```
 
 ### **ORDER BY**: used to sort the result-set in ascending or descending order
-* `SELECT` * `FROM` table_name `ORDER BY` column;
-* `SELECT` * `FROM` table_name `ORDER BY` column `DESC`;
-* `SELECT` * `FROM` table_name `ORDER BY` column1 `ASC`, column2 `DESC`;
+``` sql
+`SELECT` * FROM table_name ORDER BY column1`ASC, column2 DESC
+```
 
 ### **SELECT TOP**: used to specify the number of records to return from top of table
-* `SELECT TOP` number columns_names `FROM` table_name `WHERE` condition;
-* `SELECT TOP` percent columns_names `FROM` table_name `WHERE` condition;
-* Not all database systems support `SELECT TOP`. The MySQL equivalent is the `LIMIT` clause
-* `SELECT` column_names `FROM` table_name `LIMIT` offset, count;
+``` sql
+SELECT TOP number columns_names FROM table_name WHERE condition
+SELECT TOP percent columns_names FROM table_name WHERE condition
+
+-- Not all database systems support `SELECT TOP`. The MySQL equivalent is the `LIMIT` clause
+SELECT column_name FROM table_name LIMIT offset, count
+
+-- The PSQL equivalent is the `LIMIT` clause and OFFSET
+SELECT column_name FROM table_name LIMIT number OFFSET number
+```
 
 ### **LIKE**: operator used in a WHERE clause to search for a specific pattern in a column
 * % (percent sign) is a wildcard character that represents zero, one, or multiple characters
